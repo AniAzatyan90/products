@@ -96,7 +96,23 @@ async function addProduct() {
     }
     product.price = productPrice;
     setLocalStorage(product);
+    cleanInfo()
     read()
+
+}
+
+function cleanInfo() {
+    let name = document.querySelector('.productName')
+    name.value = "";
+    let description = document.querySelector('.description')
+    description.value = "";
+
+    let boxs = document.querySelectorAll('.box');
+
+    let inputs = document.querySelectorAll('.input1');
+    boxs.forEach(x => x.checked = false)
+    inputs.forEach(x => x.value = "")
+
 }
 
 function createProduct(product) {
