@@ -9,36 +9,28 @@
     </head>
 
     <body>
-        <!-- <header>
-            <img src="img/feature30-removebg-preview.png">
-        </header> -->
         <div class="container">
-       
+            <div class="admin">
+                <input type="file" class="product-image">
+                <label>
+                    <h2>Name:</h2>
+                </label>
+                <input class="productName" type="text" placeholder="Enter product name">
 
-            <input type="file" class="product-image">
-            <label>Name:</label>
-            <input class="productName" type="text" placeholder="Enter product name">
+                <label>
+                    <h2>Description</h2>
+                </label>
+                <textarea class="description" placeholder="Enter product description"></textarea>
 
-            <label>Description:</label>
-            <textarea class="description" placeholder="Enter product description"></textarea>
-
-            <h2>Ingredients</h2>
-            <div class="ingridents">
-
+                <h2>Ingredients</h2>
+                <div class="ingridents"></div>
+                <button class="btn">add product</button>
             </div>
-
-            <button onclick="addProduct()">Add Product</button>
-
-        </div>
-        <div class="products">
-
-
+            <div class="products"> </div>
         </div>
 
-
-        <script src="script.js"></script>
-        <!-- <script type="module" defer src="modul.js"></script> -->
-
+        <script type="module" defer src="/database.js"></script>
+        <script type="module" defer src="script.js"></script>
 
     </body>
 

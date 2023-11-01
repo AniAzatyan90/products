@@ -1,3 +1,4 @@
+
 const ingredients = [
     { id: 1, name: "Flour", price: 500 },
     { id: 2, name: "Sugar", price: 400 },
@@ -25,5 +26,15 @@ const ingredients = [
     { id: 24, name: "Coconut Flakes", price: 400 },
     { id: 25, name: "Pumpkin Puree", price: 300 }
 ];
+function setLocalStorage(arrString) {
+    let existingObjects = JSON.parse(localStorage.getItem('products')) || [];
+    localStorage.removeItem('products')
+    existingObjects.push(arrString);
+    localStorage.setItem('products', JSON.stringify(existingObjects));
+}
 
-export default ingredients;
+function getLocalStorage() {
+    let storedData = localStorage.getItem('products');
+    return JSON.parse(storedData);
+}
+export { setLocalStorage, getLocalStorage, ingredients };
