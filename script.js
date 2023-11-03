@@ -1,26 +1,30 @@
 import { getLocalStorage, setLocalStorage, ingredients } from "./database.js";
-let containerIngridents = document.querySelector('.ingridents')
+createAdmin()
+function createAdmin() {
+    let containerIngridents = document.querySelector('.ingridents')
 
-for (let i = 0; i < ingredients.length; i++) {
-    let currentElement = document.createElement('div')
-    currentElement.classList = 'ingrident'
-    currentElement.innerHTML =
-        `
+    for (let i = 0; i < ingredients.length; i++) {
+        let currentElement = document.createElement('div')
+        currentElement.classList = 'ingrident'
+        currentElement.innerHTML =
+            `
        <div class="left-column">
           <input type="checkbox"  class="box" >
           <span >${ingredients[i].name}</span>
        </div>
        <div class="right-column">
           <input type="text" class="input1">
+         
        </div>
+      
      `
-    containerIngridents.append(currentElement)
-
+      containerIngridents.append(currentElement)
+    }
+    let btn = document.querySelector(".btn")
+    btn.addEventListener("click", addProduct)
 }
-let products = getLocalStorage()
-var btn = document.querySelector(".btn")
 
-btn.addEventListener("click", addProduct)
+let products = getLocalStorage()
 
 for (let i = 0; i < products.length; i++) {
     createProduct(products[i]);
@@ -34,7 +38,7 @@ function read() {
     for (let i = 0; i < products.length; i++) {
         createProduct(products[i]);
     }
-    console.log(products[i]);
+
 }
 
 
@@ -86,7 +90,7 @@ async function addProduct() {
         if (imageFile) {
             let imageUrl = await readFileAsync(imageFile);
             product.image = imageUrl;
-            console.log(product);
+
         }
 
         product.price = productPrice;
@@ -95,10 +99,43 @@ async function addProduct() {
         console.error('Error reading the image file:', error);
     }
     product.price = productPrice;
-    setLocalStorage(product);
-    cleanInfo()
+
+
+    let errorList = [];
+
+    if (validation(product, errorList)) {
+        setLocalStorage(product);
+        cleanInfo();
+    } else {
+        for (let index = 0; index < errorList.length; index++) {
+
+            alert(errorList[index]);
+        }
+    }
     read()
 
+}
+function validation(product, errorList) {
+    if (product.name === "") {
+        errorList.push("Product name cannot be empty");
+    }
+
+    if (product.count === "") {
+        errorList.push("count count cannot be empty");
+    }
+    if (product.description === "") {
+        errorList.push("description  cannot be empty");
+    }
+
+    if (errorList.length > 0) {
+
+
+        return false;
+    }
+
+
+
+    return true;
 }
 
 function cleanInfo() {
@@ -115,6 +152,7 @@ function cleanInfo() {
 
 }
 
+
 function createProduct(product) {
     let container = document.querySelector('.products');
     let productDiv = document.createElement('div');
@@ -126,7 +164,6 @@ function createProduct(product) {
         listItem.textContent = ingredient.name + " " + ingredient.count + " gr";
         ingredientsList.append(listItem);
     });
-
     productDiv.innerHTML =
         `
         <img class="product-image" src="${product.image}">
@@ -149,9 +186,9 @@ function calculetPrice(name, count) {
     }
     let currentPrice = 0
     if (count > 1000) {
-        currentPrice = price * (count / 1000)
+        currentPrice = price * (count / 100)
     } else {
-        currentPrice = price * (1000 / count)
+        currentPrice = price * (100 / count)
     }
     return currentPrice
 }
