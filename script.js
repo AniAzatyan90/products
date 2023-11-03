@@ -8,6 +8,34 @@ function createAdmin() {
     let containerIngridents = document.createElement('div');
     containerIngridents.classList = 'ingredients';
 
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.className = "product-image";
+
+    const ingredientName = document.createElement("h2");
+    ingredientName.textContent = "Name:";
+    const labelName = document.createElement('label');
+    labelName.appendChild(ingredientName)
+
+    const productNameInput = document.createElement("input");
+    productNameInput.type = "text";
+    productNameInput.className = "productName"
+    productNameInput.placeholder = "Enter product name";
+
+    const ingredientH2 = document.createElement("h2");
+    ingredientH2.textContent = "Ingredients";
+    const labelDiscription = document.createElement("label");
+    labelDiscription.appendChild(ingredientH2)
+
+    const textarea = document.createElement("textarea");
+    textarea.className = "description";
+    textarea.placeholder = "Enter product description";
+
+    const Ingredients = document.createElement("h2");
+    Ingredients.textContent = "Ingredients";
+
+
+
     for (let i = 0; i < ingredients.length; i++) {
         let currentElement = document.createElement('div');
         currentElement.classList = 'ingredient';
@@ -25,11 +53,21 @@ function createAdmin() {
 
     const addButton = document.createElement('button');
     addButton.textContent = 'Add Product';
-    addButton.classList.add('btn');
+    addButton.className = ('btn');
 
     addButton.addEventListener("click", addProduct);
+
+    adminContainer.appendChild(fileInput);
+    adminContainer.appendChild(productNameInput)
+    adminContainer.appendChild(labelDiscription);
+    adminContainer.appendChild(labelName);
+    adminContainer.appendChild(textarea);
+    adminContainer.appendChild(Ingredients);
     adminContainer.appendChild(containerIngridents);
     adminContainer.appendChild(addButton);
+    ;
+
+
 }
 
 
