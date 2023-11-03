@@ -5,8 +5,7 @@ createAdmin();
 
 function createAdmin() {
     const adminContainer = document.querySelector('.admin');
-    let containerIngridents = document.createElement('div');
-    containerIngridents.classList = 'ingredients';
+
 
     const fileInput = document.createElement("input");
     fileInput.type = "file";
@@ -14,6 +13,7 @@ function createAdmin() {
 
     const ingredientName = document.createElement("h2");
     ingredientName.textContent = "Name:";
+
     const labelName = document.createElement('label');
     labelName.appendChild(ingredientName)
 
@@ -24,6 +24,7 @@ function createAdmin() {
 
     const ingredientH2 = document.createElement("h2");
     ingredientH2.textContent = "Ingredients";
+
     const labelDiscription = document.createElement("label");
     labelDiscription.appendChild(ingredientH2)
 
@@ -35,11 +36,13 @@ function createAdmin() {
     Ingredients.textContent = "Ingredients";
 
 
+    const containerIngridentsEl = document.createElement('div');
+    containerIngridentsEl.classList = 'ingredients';
 
     for (let i = 0; i < ingredients.length; i++) {
-        let currentElement = document.createElement('div');
-        currentElement.classList = 'ingredient';
-        currentElement.innerHTML = `
+        let ingredientEl = document.createElement('div');
+        ingredientEl.classList = 'ingredient';
+        ingredientEl.innerHTML = `
             <div class="left-column">
                 <input type="checkbox" class="box">
                 <span>${ingredients[i].name}</span>
@@ -48,13 +51,12 @@ function createAdmin() {
                 <input type="text" class="input1">
             </div>
         `;
-        containerIngridents.appendChild(currentElement);
+        containerIngridentsEl.appendChild(ingredientEl);
     }
 
     const addButton = document.createElement('button');
     addButton.textContent = 'Add Product';
     addButton.className = ('btn');
-
     addButton.addEventListener("click", addProduct);
 
     adminContainer.appendChild(fileInput);
@@ -63,11 +65,9 @@ function createAdmin() {
     adminContainer.appendChild(labelName);
     adminContainer.appendChild(textarea);
     adminContainer.appendChild(Ingredients);
-    adminContainer.appendChild(containerIngridents);
+    adminContainer.appendChild(containerIngridentsEl);
     adminContainer.appendChild(addButton);
     ;
-
-
 }
 
 
@@ -81,11 +81,9 @@ function read() {
     let containerIngridents = document.querySelector('.products');
     containerIngridents.innerHTML = "";
     products = getLocalStorage()
-
     for (let i = 0; i < products.length; i++) {
         createProduct(products[i]);
     }
-
 }
 
 
