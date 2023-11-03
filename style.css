@@ -54,12 +54,23 @@ body {
 
 }
 
-.button {
-
-    background: rgba(0, 128, 0, 0.372);
+.btn {
+    background-color: #4CAF50;
     border: none;
-    margin-left: 20%;
-    margin-top: 30%;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 20px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #adcbae;
+    color: blac;
 }
 
 .description {

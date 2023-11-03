@@ -1,28 +1,37 @@
 import { getLocalStorage, setLocalStorage, ingredients } from "./database.js";
-createAdmin()
+
+
+createAdmin();
+
 function createAdmin() {
-    let containerIngridents = document.querySelector('.ingridents')
+    const adminContainer = document.querySelector('.admin');
+    let containerIngridents = document.createElement('div');
+    containerIngridents.classList = 'ingredients';
 
     for (let i = 0; i < ingredients.length; i++) {
-        let currentElement = document.createElement('div')
-        currentElement.classList = 'ingrident'
-        currentElement.innerHTML =
-            `
-       <div class="left-column">
-          <input type="checkbox"  class="box" >
-          <span >${ingredients[i].name}</span>
-       </div>
-       <div class="right-column">
-          <input type="text" class="input1">
-         
-       </div>
-      
-     `
-      containerIngridents.append(currentElement)
+        let currentElement = document.createElement('div');
+        currentElement.classList = 'ingredient';
+        currentElement.innerHTML = `
+            <div class="left-column">
+                <input type="checkbox" class="box">
+                <span>${ingredients[i].name}</span>
+            </div>
+            <div class="right-column">
+                <input type="text" class="input1">
+            </div>
+        `;
+        containerIngridents.appendChild(currentElement);
     }
-    let btn = document.querySelector(".btn")
-    btn.addEventListener("click", addProduct)
+
+    const addButton = document.createElement('button');
+    addButton.textContent = 'Add Product';
+    addButton.classList.add('btn');
+
+    addButton.addEventListener("click", addProduct);
+    adminContainer.appendChild(containerIngridents);
+    adminContainer.appendChild(addButton);
 }
+
 
 let products = getLocalStorage()
 
@@ -117,14 +126,14 @@ async function addProduct() {
 }
 function validation(product, errorList) {
     if (product.name === "") {
-        errorList.push("Product name cannot be empty");
+        errorList.push("Product name cannot ");
     }
 
     if (product.count === "") {
-        errorList.push("count count cannot be empty");
+        errorList.push("count count cannot ");
     }
     if (product.description === "") {
-        errorList.push("description  cannot be empty");
+        errorList.push("description  cannot ");
     }
 
     if (errorList.length > 0) {
@@ -192,4 +201,18 @@ function calculetPrice(name, count) {
     }
     return currentPrice
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
