@@ -5,37 +5,60 @@ createAdmin();
 
 function createAdmin() {
     const adminContainer = document.querySelector('.admin');
+    adminContainer.appendChild(createFileInputEl());
+    adminContainer.appendChild(createNamePanelEl());
+    const productName = createProductNameEl()
+    adminContainer.appendChild(productName)
+    adminContainer.appendChild(createDescriptionPanel());
+    adminContainer.appendChild(createTextArea());
+    const ingredientH2 = document.createElement("h2");
+    ingredientH2.textContent = "Ingredients";
+    adminContainer.appendChild(ingredientH2);
+    adminContainer.appendChild(createIngridientsEl());
+    adminContainer.appendChild(createAddButton());
+}
 
+function createNamePanelEl() {
+    const ingredientName = document.createElement("h2");
+    ingredientName.textContent = "Name:";
+    const labelName = document.createElement('label');
+    labelName.appendChild(ingredientName)
+    return labelName;
+}
 
+function createFileInputEl() {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
     fileInput.className = "product-image";
+    return fileInput;
+}
 
-    const ingredientName = document.createElement("h2");
-    ingredientName.textContent = "Name:";
-
-    const labelName = document.createElement('label');
-    labelName.appendChild(ingredientName)
-
+function createProductNameEl() {
     const productNameInput = document.createElement("input");
     productNameInput.type = "text";
     productNameInput.className = "productName"
     productNameInput.placeholder = "Enter product name";
+    return productNameInput;
+}
 
-    const ingredientH2 = document.createElement("h2");
-    ingredientH2.textContent = "Ingredients";
+function createAddButton() {
+    const addButton = document.createElement('button');
+    addButton.textContent = 'Add Product';
+    addButton.className = ('btn');
+    addButton.addEventListener("click", addProduct);
+    return addButton;
+}
 
+
+function createDescriptionPanel() {
+    const description = document.createElement("h2");
+    description.textContent = "description";
     const labelDiscription = document.createElement("label");
-    labelDiscription.appendChild(ingredientH2)
+    labelDiscription.appendChild(description)
 
-    const textarea = document.createElement("textarea");
-    textarea.className = "description";
-    textarea.placeholder = "Enter product description";
-
-    const Ingredients = document.createElement("h2");
-    Ingredients.textContent = "Ingredients";
-
-
+    return labelDiscription;
+}
+function createIngridientsEl() {
     const containerIngridentsEl = document.createElement('div');
     containerIngridentsEl.classList = 'ingredients';
 
@@ -53,23 +76,15 @@ function createAdmin() {
         `;
         containerIngridentsEl.appendChild(ingredientEl);
     }
-
-    const addButton = document.createElement('button');
-    addButton.textContent = 'Add Product';
-    addButton.className = ('btn');
-    addButton.addEventListener("click", addProduct);
-
-    adminContainer.appendChild(fileInput);
-    adminContainer.appendChild(productNameInput)
-    adminContainer.appendChild(labelDiscription);
-    adminContainer.appendChild(labelName);
-    adminContainer.appendChild(textarea);
-    adminContainer.appendChild(Ingredients);
-    adminContainer.appendChild(containerIngridentsEl);
-    adminContainer.appendChild(addButton);
-    ;
+    return containerIngridentsEl;
 }
 
+function createTextArea() {
+    const textarea = document.createElement("textarea");
+    textarea.className = "description";
+    textarea.placeholder = "Enter product description";
+    return textarea;
+}
 
 let products = getLocalStorage()
 
@@ -135,9 +150,7 @@ async function addProduct() {
         if (imageFile) {
             let imageUrl = await readFileAsync(imageFile);
             product.image = imageUrl;
-
         }
-
         product.price = productPrice;
 
     } catch (error) {
@@ -153,7 +166,6 @@ async function addProduct() {
         cleanInfo();
     } else {
         for (let index = 0; index < errorList.length; index++) {
-
             alert(errorList[index]);
         }
     }
@@ -173,14 +185,10 @@ function validation(product, errorList) {
     }
 
     if (errorList.length > 0) {
-
-
         return false;
+    } else {
+        return true;
     }
-
-
-
-    return true;
 }
 
 function cleanInfo() {
@@ -188,13 +196,10 @@ function cleanInfo() {
     name.value = "";
     let description = document.querySelector('.description')
     description.value = "";
-
     let boxs = document.querySelectorAll('.box');
-
     let inputs = document.querySelectorAll('.input1');
     boxs.forEach(x => x.checked = false)
     inputs.forEach(x => x.value = "")
-
 }
 
 
@@ -217,9 +222,71 @@ function createProduct(product) {
         ${ingredientsList.outerHTML} 
         <p class="product-price">${product.price} dram </p>
     `;
+    const editButton = document.createElement("button");
+    editButton.textContent = "Edit"
+    editButton.classList = "btn"
+
+    editButton.addEventListener("click", () => {
+        openEditPanel(product)
+    })
+    productDiv.append(editButton)
     console.log(product.image);
     container.appendChild(productDiv);
 }
+
+function openEditPanel(product) {
+    const body = document.querySelector('body')
+    body.append(createModalPanel(product))
+}
+
+function createModalPanel(product) {
+    const span = document.createElement('span')
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+    span.innerText = "X"
+    span.classList = "close"
+
+    const editPanel = createEditPanel(product)
+
+    const modalContent = document.createElement('div')
+    modalContent.classList = "modal-content"
+    modalContent.append(span)
+    modalContent.append(editPanel)
+
+    const modal = document.createElement('div')
+    modal.classList = "modal"
+    modal.style.display = "block";
+    modal.append(modalContent)
+
+    return modal;
+}
+
+function createEditPanel(product) {
+
+    const editPanel = document.createElement('div');
+    editPanel.classList = "admin"
+
+    editPanel.appendChild(createFileInputEl());
+
+    editPanel.appendChild(createNamePanelEl());
+    const productName = createProductNameEl()
+    productName.value = product.name
+    editPanel.appendChild(productName)
+
+    editPanel.appendChild(createDescriptionPanel());
+    editPanel.appendChild(createTextArea());
+
+    const ingredientH2 = document.createElement("h2");
+    ingredientH2.textContent = "Ingredients";
+    editPanel.appendChild(ingredientH2);
+    editPanel.appendChild(createIngridientsEl());
+
+    editPanel.appendChild(createAddButton());
+
+    return editPanel;
+}
+
 
 function calculetPrice(name, count) {
     let price = 0
