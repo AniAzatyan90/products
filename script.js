@@ -154,6 +154,7 @@ async function addProduct() {
         product.price = productPrice;
 
     } catch (error) {
+        F
         console.error('Error reading the image file:', error);
     }
     product.price = productPrice;
@@ -202,7 +203,6 @@ function cleanInfo() {
     inputs.forEach(x => x.value = "")
 }
 
-
 function createProduct(product) {
     let container = document.querySelector('.products');
     let productDiv = document.createElement('div');
@@ -214,6 +214,7 @@ function createProduct(product) {
         listItem.textContent = ingredient.name + " " + ingredient.count + " gr";
         ingredientsList.append(listItem);
     });
+
     productDiv.innerHTML =
         `
         <img class="product-image" src="${product.image}">
@@ -230,7 +231,6 @@ function createProduct(product) {
         openEditPanel(product)
     })
     productDiv.append(editButton)
-    console.log(product.image);
     container.appendChild(productDiv);
 }
 
@@ -280,10 +280,20 @@ function createEditPanel(product) {
     const ingredientH2 = document.createElement("h2");
     ingredientH2.textContent = "Ingredients";
     editPanel.appendChild(ingredientH2);
-    editPanel.appendChild(createIngridientsEl());
+    const createIngridients = createIngridientsEl()
 
+    const ingredients = createIngridients.querySelectorAll(".ingredient")
+    for (let i = 0; i < ingredients.length; i++) {
+        for (let j = 0; j < product.ingredients.length; j++) {
+            let currentIngrindent = ingredients[i]
+            if (product.ingredients[j].name === currentIngrindent.querySelector("span").innerText) {
+                currentIngrindent.querySelector('.box').checked = true
+                currentIngrindent.querySelector('.input1').value = product.ingredients[j].count
+            }
+        }
+    }
+    editPanel.appendChild(createIngridients);
     editPanel.appendChild(createAddButton());
-
     return editPanel;
 }
 
