@@ -56,14 +56,33 @@ function createSaveButton(product) {
     saveButton.addEventListener("click", (event) => {
         console.log("event.target")
         product.name = event.target.parentElement.querySelector(".productName").value
-        // product. = event.target.parentElement.querySelector(".productName").value
-
+        product.description = event.target.parentElement.querySelector(".description").value
+        fillIngrIdents(product, event.target.parentElement)
         editLocalStorage(product)
         let modal = document.querySelector(".modal");
         modal.remove()
         read()
     });
     return saveButton;
+}
+function fillIngrIdents(product, el) {
+    let productIngredients = [];
+
+    let boxs = el.querySelectorAll('.box');
+    for (let i = 0; i < boxs.length; i++) {
+        if (boxs[i].checked) {
+            let currentIngredient = {};
+            let ingredientDiv = boxs[i].parentElement.parentElement
+            currentIngredient.name = ingredientDiv.querySelector('span').textContent;
+            let count = +ingredientDiv.querySelector('.input1').value;
+            currentIngredient.count = count
+
+            currentIngredient.price = calculetPrice(currentIngredient.name, count);
+            productIngredients.push(currentIngredient);
+        }
+    }
+
+    product.ingredients = productIngredients;
 }
 
 function createDescriptionPanel() {
@@ -139,22 +158,8 @@ async function addProduct() {
     product.name = name;
     product.description = description;
 
-    let productIngredients = [];
-    let boxs = document.querySelectorAll('.box');
-    for (let i = 0; i < boxs.length; i++) {
-        if (boxs[i].checked) {
-            let currentIngredient = {};
-            let ingredientDiv = boxs[i].parentElement.parentElement
-            currentIngredient.name = ingredientDiv.querySelector('span').textContent;
-            let count = +ingredientDiv.querySelector('.input1').value;
-            currentIngredient.count = count
 
-            currentIngredient.price = calculetPrice(currentIngredient.name, count);
-            productIngredients.push(currentIngredient);
-        }
-    }
-
-    product.ingredients = productIngredients;
+    fillIngrIdents(product, document)
     let productPrice = 0;
     for (let j = 0; j < product.ingredients.length; j++) {
         productPrice = productPrice + product.ingredients[j].price;
