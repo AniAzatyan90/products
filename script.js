@@ -1,4 +1,4 @@
-import { getLocalStorage, setLocalStorage, ingredients } from "./database.js";
+import { getLocalStorage, setLocalStorage, editLocalStorage, ingredients, deleteProductSetLocal } from "./database.js";
 
 
 createAdmin();
@@ -49,6 +49,22 @@ function createAddButton() {
     return addButton;
 }
 
+function createSaveButton(product) {
+    const saveButton = document.createElement('button');
+    saveButton.textContent = 'save';
+    saveButton.className = ('btn');
+    saveButton.addEventListener("click", (event) => {
+        console.log("event.target")
+        product.name = event.target.parentElement.querySelector(".productName").value
+        // product. = event.target.parentElement.querySelector(".productName").value
+
+        editLocalStorage(product)
+        let modal = document.querySelector(".modal");
+        modal.remove()
+        read()
+    });
+    return saveButton;
+}
 
 function createDescriptionPanel() {
     const description = document.createElement("h2");
@@ -227,12 +243,27 @@ function createProduct(product) {
     editButton.textContent = "Edit"
     editButton.classList = "btn"
 
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "delete"
+    deleteButton.classList = "btn1"
+
+    deleteButton.addEventListener("click", () => {
+        deleteProduct(product)
+    })
     editButton.addEventListener("click", () => {
         openEditPanel(product)
     })
+    productDiv.append(deleteButton)
     productDiv.append(editButton)
     container.appendChild(productDiv);
 }
+
+function deleteProduct(product) {
+    let productNameToDelete = product.name;
+    let updatedProducts = deleteProductSetLocal({ name: productNameToDelete });
+    products = updatedProducts;
+    read();
+};
 
 function openEditPanel(product) {
     const body = document.querySelector('body')
@@ -293,7 +324,7 @@ function createEditPanel(product) {
         }
     }
     editPanel.appendChild(createIngridients);
-    editPanel.appendChild(createAddButton());
+    editPanel.appendChild(createSaveButton(product));
     return editPanel;
 }
 
